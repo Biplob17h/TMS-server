@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import colors from "colors";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoute.js";
+import ticketRoute from "./routes/ticketRoute.js";
 
 // APP
 const app = express();
@@ -19,6 +20,7 @@ app.use(morgan("dev"));
 
 // ROUTES
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/ticket", ticketRoute);
 
 // HOMEPAGE
 app.get("/", (req, res) => {
