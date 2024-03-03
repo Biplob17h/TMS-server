@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 import { promisify } from "util";
 import User from "../model/userModel.js";
-const verifyUser = async (req, res, next) => {
+
+const isAdmin = async (req, res, next) => {
   try {
     const token = await req.headers?.authorization.split(" ")[1];
 
@@ -10,11 +11,16 @@ const verifyUser = async (req, res, next) => {
       process.env.JWT_TOKEN_SECRET
     );
 
-    const user = await User.findOne({ email: decode.email }).select(
-      "-password"
-    );
+    const user = await User.findOne({ email: decode.email });
 
-    req.user = user;
+    if (user.role != "admin") {
+      return res.status(400).json({
+        status: "fail",
+        error: "authorization error",
+      });
+    }
+
+    req.admin = user;
 
     next();
   } catch (error) {
@@ -25,4 +31,4 @@ const verifyUser = async (req, res, next) => {
   }
 };
 
-export default verifyUser;
+export default isAdmin;

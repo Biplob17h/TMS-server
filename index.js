@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // ROUTES
-app.use('/api/v1/user', userRouter)
+app.use("/api/v1/user", userRouter);
 
 // HOMEPAGE
 app.get("/", (req, res) => {
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 
 // LISTEN
 const port = process.env.PORT || 8080;
-connectDB()
+connectDB();
 app.listen(port, () => {
-  console.log(`server is running on port ${port}`.green.bgWhite.bold);
+  console.log(`server is running on port ${port}`.cyan.bold);
 });

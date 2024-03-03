@@ -3,19 +3,12 @@ import validator from "validator";
 
 const userSchema = mongoose.Schema(
   {
-    firstName: {
+    name: {
       type: String,
       minLength: [3, "First name is too short"],
       maxLength: [20, "Name too large"],
       trim: true,
-      default: "First name",
-    },
-    lastName: {
-      type: String,
-      minLength: [3, "Last name is too short"],
-      maxLength: [20, "Name too large"],
-      trim: true,
-      default: "Last name",
+      required: [true, "Please privide a name"],
     },
     email: {
       type: String,
@@ -23,44 +16,15 @@ const userSchema = mongoose.Schema(
       required: [true, "Please provide a email"],
       unique: [true, "Email alredy in use"],
     },
-    phone: {
-      type: String,
-      // validate: [
-      //   validator.isMobilePhone,
-      //   "Please provide a valide phone number ",
-      // ],
-      default: "+880",
-    },
     role: {
       type: String,
-      enum: ["user", "writer", "admin"],
+      enum: ["user", "admin"],
       default: "user",
-    },
-    status: {
-      type: String,
-      enum: ["active", "blocked", "not-active"],
-      default: "not-active",
     },
     password: {
       type: String,
       required: [true, "please provide a password"],
     },
-    address: {
-      type: String,
-      default: "",
-    },
-    photo: {
-      data: Buffer,
-      contentType: String,
-    },
-    confirmToken: String,
-    isProfilePhoto: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  {
-    timeStamps: true,
   }
 );
 
