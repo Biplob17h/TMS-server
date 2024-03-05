@@ -40,10 +40,12 @@ const createATicket = async (req, res) => {
 
 const sloveATicket = async (req, res) => {
   try {
-    const { sloved, slovedAt, ticketId } = req.body;
+    const { resolved, resolvedAt, ticketId } = req.body;
 
+    console.log(req.body);
+    
     // CHECK CREDENTIALS
-    if (!sloved || !slovedAt || !ticketId) {
+    if (!resolved || !resolvedAt || !ticketId) {
       return res.status(400).json({
         status: "fail",
         error: "please provide your credentials",
@@ -60,17 +62,17 @@ const sloveATicket = async (req, res) => {
     }
 
     // update ticket data
-    ticket.sloved = sloved;
-    ticket.slovedAt = slovedAt;
-    ticket.status = "sloved";
+    ticket.resolved = resolved;
+    ticket.resolvedAt = resolvedAt;
+    ticket.status = "resolved";
 
     // update ticket
     const result = await Ticket.updateOne({ _id: ticketId }, { $set: ticket });
 
     res.status(200).json({
       status: "success",
-      message: "ticket sloved",
-      result,
+      message: "ticket resolved",
+      // result,
     });
   } catch (error) {
     res.status(400).json({
@@ -127,7 +129,7 @@ const findASingleTicket = async (req, res) => {
   try {
     const _id = req.params.id;
 
-    const result = await Ticket.findOne(_id);
+    const result = await Ticket.findOne({ _id });
     res.status(200).json({
       status: "success",
       result,
@@ -140,4 +142,31 @@ const findASingleTicket = async (req, res) => {
   }
 };
 
-export { createATicket, sloveATicket, getAllTiket,findASingleTicket };
+const acceptTicket = async (req, res) => {
+  try {
+    const _id = req.params.id;
+
+    const ticket = await Ticket.findOne({ _id });
+    ticket.status = "pending";
+
+    const result = await Ticket.updateOne({ _id }, { $set: ticket });
+
+    res.status(200).json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
+};
+
+export {
+  createATicket,
+  sloveATicket,
+  getAllTiket,
+  findASingleTicket,
+  acceptTicket,
+};

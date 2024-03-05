@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  acceptTicket,
   createATicket,
   findASingleTicket,
   getAllTiket,
@@ -11,9 +12,10 @@ const ticketRoute = express.Router();
 
 ticketRoute.post("/create", createATicket);
 
-ticketRoute.get("/allticket",verifyUser,  getAllTiket);
-ticketRoute.get('/getTicket/:id', findASingleTicket)
+ticketRoute.get("/allticket", verifyUser, getAllTiket);
+ticketRoute.get("/getTicket/:id", findASingleTicket);
 
-ticketRoute.patch("/slove",sloveATicket);
+ticketRoute.patch("/slove", sloveATicket);
+ticketRoute.patch("/accept/:id", acceptTicket);
 
 export default ticketRoute;

@@ -15,17 +15,17 @@ const ticketSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["new", "pending", "sloved"],
+    enum: ["new", "pending", "resolved"],
     default: "new",
   },
-  sloved: {
+  resolved: {
     type: String,
     trim: true,
     default: "",
   },
   createdAt: String,
   createdBy: String,
-  slovedAt: {
+  resolvedAt: {
     type: String,
     default: "",
   },
