@@ -129,6 +129,7 @@ const userLogIn = async (req, res) => {
     res.status(400).json({
       status: "fail",
       error: error.message,
+      
     });
   }
 };

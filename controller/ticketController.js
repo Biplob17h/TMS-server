@@ -5,6 +5,8 @@ const createATicket = async (req, res) => {
     // get ticket data
     const { title, description, createdAt, createdBy } = req.body;
 
+    console.log(req.body);
+
     // CHECK CREDENTIALS
     if (!title || !description || !createdAt || !createdBy) {
       return res.status(400).json({
@@ -78,4 +80,64 @@ const sloveATicket = async (req, res) => {
   }
 };
 
-export { createATicket, sloveATicket };
+const getAllTiket = async (req, res) => {
+  try {
+    // get user
+    const user = req.user;
+
+    // filter
+    const filter = req.query.filter;
+
+    // query
+    let query = {};
+    if (filter === "all") {
+      if (user.role === "user") {
+        query = {
+          createdBy: user.email,
+        };
+      }
+    } else {
+      if (user.role === "user") {
+        query = {
+          createdBy: user.email,
+          status: filter,
+        };
+      } else {
+        query = {
+          status: filter,
+        };
+      }
+    }
+
+    const result = await Ticket.find(query);
+
+    res.status(200).json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
+};
+
+const findASingleTicket = async (req, res) => {
+  try {
+    const _id = req.params.id;
+
+    const result = await Ticket.findOne(_id);
+    res.status(200).json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "fail",
+      error: error.message,
+    });
+  }
+};
+
+export { createATicket, sloveATicket, getAllTiket,findASingleTicket };

@@ -1,9 +1,19 @@
 import express from "express";
-import { createATicket, sloveATicket } from "../controller/ticketController.js";
+import {
+  createATicket,
+  findASingleTicket,
+  getAllTiket,
+  sloveATicket,
+} from "../controller/ticketController.js";
+import verifyUser from "../utils/verifyUser.js";
 
 const ticketRoute = express.Router();
 
 ticketRoute.post("/create", createATicket);
-ticketRoute.patch('/slove', sloveATicket)
+
+ticketRoute.get("/allticket",verifyUser,  getAllTiket);
+ticketRoute.get('/getTicket/:id', findASingleTicket)
+
+ticketRoute.patch("/slove",sloveATicket);
 
 export default ticketRoute;
